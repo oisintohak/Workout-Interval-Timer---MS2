@@ -26,8 +26,8 @@ This is the second Milestone Project for the Code Institute course.
 
 ### - Skeleton (How will our information be represented, and how will the user navigate to the information and the features?)
 ###### Wireframes:
-- [Desktop](wireframes/desktop.PNG)
-- [Mobile](wireframes/mobile.PNG)
+- [Desktop](wireframes/desktop.png)
+- [Mobile](wireframes/mobile.png)
 
 ### - Surface (What will the finished product look like? - What colors, typography, and design elements will we use?)
 - Minimal interface.
