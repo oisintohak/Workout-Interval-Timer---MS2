@@ -32,3 +32,9 @@ This is the second Milestone Project for the Code Institute course.
 ### - Surface (What will the finished product look like? - What colors, typography, and design elements will we use?)
 - Minimal interface.
 - Contrasting accents for work/rest times to act as instant visual signal to users.
+
+
+### - Planning
+ - Timer function needss to differentiate between work & rest times.
+ - When paused, current round number needs to be saved
+ - Add all round times to get total runtime, keep track of elapsed time and compare to length of rounds to calculate current round.
