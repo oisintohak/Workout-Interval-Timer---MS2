@@ -16,22 +16,24 @@ const timer = {
 const settings = {};
 
 function createRounds(t) {
-  t.rounds = [];
+  t.rounds = {};
   for (let i = 1; i <= t.numRounds; i ++) {
-    t.rounds.push(t.workTime);
+    t.rounds[i] = {};
+    t.rounds[i].work = t.workTime;
     if (i % t.extBreakAfter == 0) {
-      t.rounds.push(t.extBreaklength);
+      t.rounds[i].rest = t.extBreaklength;
     }
     else {
-      t.rounds.push(t.restTime);
+      t.rounds[i].rest = t.restTime;
     }
   }
 }
 
 function calcRuntime (t) {
   t.runtime = 0;
-  for (let item of t.rounds) {
-    t.runtime += item;
+  for (let i = 1;i <= t.numRounds; i++){
+    t.runtime += t.rounds[i].work;
+    t.runtime += t.rounds[i].rest;
   }
 }
 
@@ -60,7 +62,6 @@ function countdown() {
   timer.timeElapsed += timer.timeElapsedOnPause;
   console.log(timer.timeElapsed);
   timer.timeRemaining = timer.runtime - Math.floor((timer.timeElapsed / 1000));
-  checkRound();
   displayTime(timer.timeRemaining);
 }
 
@@ -68,15 +69,6 @@ function displayTime(time) {
   timerDisplay.textContent = time;
 };
 
-function checkRound() {
-  let i = 0;
-  for (let item of timer.rounds) {
-    i += item;
-    if (timer.timeElapsed / 1000 >= item) {
-      
-    }
-  }
-}
 
 function pauseTimer() {
   if (timer.running === true) {
