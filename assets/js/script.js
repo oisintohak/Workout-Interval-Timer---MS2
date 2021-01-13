@@ -2,16 +2,17 @@ const timerDisplay = document.querySelector('#t-display');
 const timerStart = document.querySelector('#t-start');
 const timerPause = document.querySelector('#t-pause');
 const timerReset = document.querySelector('#t-reset');
-const timerProgress = document.querySelector('#t-progress');
+const timerProgress = document.querySelector('#t-progress-time');
+const timerProgressBar = document.querySelector('#t-progress-bar');
 const timer = {
   running: false,
   hasStarted: false,
-  workTime: 10,
-  restTime: 5,
-  numRounds: 9,
-  extBreakOn: true,
-  extBreaklength: 1,
-  extBreakAfter: 3,
+  workTime: 3,
+  restTime: 2,
+  numRounds: 3,
+  extBreakOn: false,
+  extBreaklength: 0,
+  extBreakAfter: 0,
   timeElapsedOnPause: 0
 };
 const settings = {};
@@ -65,12 +66,36 @@ function startTimer () {
 
 
 function countdown() {
-  timer.timeElapsed = Math.floor((new Date().getTime() - timer.startTime) / 1000);
+  // unrounded value for smooth progress bar:
+  timer.timeElapsedMs = (new Date().getTime() - timer.startTime) / 1000;
+  timer.timeElapsed = Math.floor(timer.timeElapsedMs);
   // if timer was paused, add previous elapsed time
   timer.timeElapsed += timer.timeElapsedOnPause;
   timer.timeRemaining = timer.runtime - timer.timeElapsed;
-  checkRound(timer);
   displayTime();
+  displayProgress();
+  checkRound(timer);
+}
+
+function checkRound(t) {
+  for (let i = 1; i <= t.numRounds*2; i++) {
+    if (t.timeElapsed >= t.rounds[i].roundRuntime) {
+      t.currentRound = i + 1;
+      if (t.currentRound % 2 === 0) {
+        t.roundType = 'rest';
+      }
+      else {
+        t.roundType = 'work';
+      }
+      //change color scheme
+      //audio alert
+    }
+  }
+  if (t.currentRound > (t.numRounds*2)) {
+    console.log('finish!');
+    pauseTimer();
+    resetTimer();
+  }
 }
 
 function displayTime() {
@@ -87,24 +112,9 @@ function secondsToFullTime(seconds) {
   return `${min}:${sec}`;
 };
 
-function checkRound(t) {
-  for (let i = 1; i <= t.numRounds; i++) {
-    if (t.timeElapsed >= t.rounds[i].roundRuntime) {
-      t.currentRound = i + 1;
-      if (t.currentRound % 2 === 0) {
-        t.roundType = 'rest';
-      }
-      else {
-        t.roundType = 'work';
-      }
-      //change color scheme
-      //audio alert
-    }
-  }
-  if (t.currentRound === (t.numRounds)) {
-    console.log('finish!');
-  }
-}
+function displayProgress() {
+  timerProgressBar.value = (timer.timeElapsedMs / timer.runtime) * 100;
+};
 
 function pauseTimer() {
   if (timer.running === true) {
