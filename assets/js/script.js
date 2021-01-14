@@ -1,9 +1,18 @@
+// TIMER ELEMENTS
 const timerDisplay = document.querySelector('#t-display');
 const timerStart = document.querySelector('#t-start');
 const timerPause = document.querySelector('#t-pause');
 const timerReset = document.querySelector('#t-reset');
 const timerProgress = document.querySelector('#t-progress-time');
 const timerProgressBar = document.querySelector('#t-progress-bar');
+// SETTINGS ELEMENTS
+const workTimeInput = document.querySelector('#work-time');
+const restTimeInput = document.querySelector('#rest-time');
+const roundsInput = document.querySelector('#rounds');
+const extBreakCheckbox = document.querySelector('#ext-break-checkbox');
+const extBreakRounds = document.querySelector('#ext-break-rounds');
+const extBreakTime = document.querySelector('#ext-break-time');
+const updateTimer = document.querySelector('#update-timer-button');
 const timer = {
   running: false,
   hasStarted: false,
@@ -133,5 +142,17 @@ function resetTimer() {
   // load default settings
 };
 
+function disableExtBreak() {
+  if (extBreakCheckbox.checked) {
+    extBreakRounds.disabled = false;
+    extBreakTime.disabled = false;
+  }
+  else {
+    extBreakTime.disabled = true;
+    extBreakRounds.disabled = true;
+  }
+}
+
 timerStart.addEventListener('click', startTimer);
 timerPause.addEventListener('click', pauseTimer);
+extBreakCheckbox.addEventListener('change', disableExtBreak);
