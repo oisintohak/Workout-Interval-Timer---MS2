@@ -12,48 +12,48 @@ const roundsInput = document.querySelector('#rounds');
 const extBreakCheckbox = document.querySelector('#ext-break-checkbox');
 const extBreakRounds = document.querySelector('#ext-break-rounds');
 const extBreakTime = document.querySelector('#ext-break-time');
-const updateTimer = document.querySelector('#update-timer-button');
+const updateTimerButton = document.querySelector('#update-timer-button');
 const timer = {
   running: false,
   hasStarted: false,
-  workTime: 3,
-  restTime: 2,
-  numRounds: 3,
-  extBreakOn: false,
-  extBreaklength: 0,
-  extBreakAfter: 0,
+  workTime: 30,
+  restTime: 10,
+  numRounds: 9,
+  extBreak: true,
+  extBreakLength: 30,
+  extBreakAfter: 3,
   timeElapsedOnPause: 0
 };
 const settings = {};
 
-function createRounds(t) {
-  t.rounds = {};
-  for (let i = 1; i <= t.numRounds*2; i ++) {
-    t.rounds[i] = {};
+function createRounds() {
+  timer.rounds = {};
+  for (let i = 1; i <= timer.numRounds*2; i ++) {
+    timer.rounds[i] = {};
     if (i % 2 === 0) {
-      if (i % t.extBreakAfter == 0) {
-        t.rounds[i].rest = t.extBreaklength;
+      if (timer.extBreak === true && i % timer.extBreakAfter == 0) {
+        timer.rounds[i].rest = timer.extBreakLength;
       }
       else {
-        t.rounds[i].rest = t.restTime;
+        timer.rounds[i].rest = timer.restTime;
       }
       // calculate runtime for round:
-      t.rounds[i].roundRuntime = t.rounds[i].rest;
+      timer.rounds[i].roundRuntime = timer.rounds[i].rest;
     }
     else {
-      t.rounds[i].work = t.workTime;
+      timer.rounds[i].work = timer.workTime;
       // calculate runtime for round:
-      t.rounds[i].roundRuntime = t.rounds[i].work;
+      timer.rounds[i].roundRuntime = timer.rounds[i].work;
     }
     // add runtime from any previous rounds:
     if (i > 1) {
-      t.rounds[i].roundRuntime += t.rounds[i-1].roundRuntime;
+      timer.rounds[i].roundRuntime += timer.rounds[i-1].roundRuntime;
     }
   }
 }
 
-function calcRuntime (t) {
-  t.runtime = t.rounds[t.numRounds * 2].roundRuntime;
+function calcRuntime () {
+  timer.runtime = timer.rounds[timer.numRounds * 2].roundRuntime;
 }
 
 function startTimer () {
@@ -62,9 +62,9 @@ function startTimer () {
   }
   if (timer.hasStarted === false) {
     timer.hasStarted = true;
+    timer.currentRound = 1;
     createRounds(timer);
     calcRuntime(timer);
-    timer.currentRound = 1;
     timer.roundType = 'work';
     timer.timeElapsed = 0;
   }
@@ -83,24 +83,24 @@ function countdown() {
   timer.timeRemaining = timer.runtime - timer.timeElapsed;
   displayTime();
   displayProgress();
-  checkRound(timer);
+  checkRound();
 }
 
-function checkRound(t) {
-  for (let i = 1; i <= t.numRounds*2; i++) {
-    if (t.timeElapsed >= t.rounds[i].roundRuntime) {
-      t.currentRound = i + 1;
-      if (t.currentRound % 2 === 0) {
-        t.roundType = 'rest';
+function checkRound() {
+  for (let i = 1; i <= timer.numRounds*2; i++) {
+    if (timer.timeElapsed >= timer.rounds[i].roundRuntime) {
+      timer.currentRound = i + 1;
+      if (timer.currentRound % 2 === 0) {
+        timer.roundType = 'rest';
       }
       else {
-        t.roundType = 'work';
+        timer.roundType = 'work';
       }
       //change color scheme
       //audio alert
     }
   }
-  if (t.currentRound > (t.numRounds*2)) {
+  if (timer.currentRound > (timer.numRounds*2)) {
     console.log('finish!');
     pauseTimer();
     resetTimer();
@@ -153,6 +153,20 @@ function disableExtBreak() {
   }
 }
 
+function updateTimer() {
+  timer.running = false;
+  timer.hasStarted = false;
+  timer.workTime = workTimeInput.value;
+  timer.restTime = restTimeInput.value;
+  timer.numRounds = roundsInput.value;
+  extBreakCheckbox.checked === true ? timer.extBreak = true : timer.extBreak = false;
+  timer.extBreakLength = extBreakTime.value;
+  timer.extBreakAfter = extBreakRounds.value;
+  timer.timeElapsedOnPause = 0;
+  console.log('updated');
+}
+
 timerStart.addEventListener('click', startTimer);
 timerPause.addEventListener('click', pauseTimer);
 extBreakCheckbox.addEventListener('change', disableExtBreak);
+updateTimerButton.addEventListener('click', updateTimer);
