@@ -1,5 +1,6 @@
 // TIMER ELEMENTS
 const timerDisplay = document.querySelector('#t-display');
+const timerMessage = document.querySelector('#t-message');
 const timerStart = document.querySelector('#t-start');
 const timerPause = document.querySelector('#t-pause');
 const timerReset = document.querySelector('#t-reset');
@@ -70,6 +71,7 @@ function startTimer () {
   }
   timer.startTime = new Date().getTime();
   timer.running = true;
+  displayMessage();
   timer.intervalID = setInterval(countdown, 100);
 };
 
@@ -92,9 +94,11 @@ function checkRound() {
       timer.currentRound = i + 1;
       if (timer.currentRound % 2 === 0) {
         timer.roundType = 'rest';
+        displayMessage();
       }
       else {
         timer.roundType = 'work';
+        displayMessage();
       }
       //change color scheme
       //audio alert
@@ -125,11 +129,28 @@ function displayProgress() {
   timerProgressBar.value = (timer.timeElapsedMs / timer.runtime) * 100;
 };
 
+function displayMessage() {
+  if (timer.hasStarted === false) {
+    timerMessage.textContent = 'Ready';
+  }
+  if (timer.hasStarted === true && timer.running === false) {
+    timerMessage.textContent = 'Paused';
+  }
+  if (timer.roundType === 'work' && timer.running === true) {
+    timerMessage.textContent = 'GO!';
+  } 
+  if (timer.roundType === 'rest' && timer.running === true) {
+    timerMessage.textContent = 'Rest';
+  }
+
+}
+
 function pauseTimer() {
   if (timer.running === true) {
     clearInterval(timer.intervalID);
     timer.running = false;
     timer.timeElapsedOnPause = timer.timeElapsed;
+    displayMessage();
   }
   else {
     return;
@@ -153,6 +174,7 @@ function resetTimer() {
   timerProgressBar.value = 0;
   checkRound();
   timerDisplay.textContent = `${timer.workTime}`;
+  displayMessage();
   console.log('reset');
   // load default settings
 };
@@ -169,15 +191,17 @@ function disableExtBreak() {
 }
 
 function updateTimer() {
+  pauseTimer();
   timer.running = false;
   timer.hasStarted = false;
-  timer.workTime = workTimeInput.value;
-  timer.restTime = restTimeInput.value;
-  timer.numRounds = roundsInput.value;
+  timer.workTime = parseFloat(workTimeInput.value);
+  timer.restTime = parseFloat(restTimeInput.value);
+  timer.numRounds = parseFloat(roundsInput.value);
   extBreakCheckbox.checked === true ? timer.extBreak = true : timer.extBreak = false;
-  timer.extBreakLength = extBreakTime.value;
-  timer.extBreakAfter = extBreakRounds.value;
+  timer.extBreakLength = parseFloat(extBreakTime.value);
+  timer.extBreakAfter = parseFloat(extBreakRounds.value);
   timer.timeElapsedOnPause = 0;
+  resetTimer();
   console.log('updated');
 }
 
