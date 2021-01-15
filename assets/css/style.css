@@ -1,0 +1,12 @@
+#main-wrapper {
+  height: 100vh;
+}
+
+#t-display {
+  font-size: 8rem;
+  line-height: 1;
+}
+
+#settings-button {
+  width: auto;
+}
