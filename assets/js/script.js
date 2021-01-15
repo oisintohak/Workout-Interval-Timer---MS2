@@ -138,7 +138,22 @@ function pauseTimer() {
 
 function resetTimer() {
   pauseTimer();
+  timer.currentRound = 1;
   timer.hasStarted = false;
+  timer.roundType = 'work';
+  timer.timeElapsedOnPause = 0;
+  delete timer.startTime;
+  delete timer.timeElapsed;
+  delete timer.timeElapsedMs;
+  delete timer.timeRemaining;
+  createRounds();
+  calcRuntime();
+  timerDisplay.textContent = '00';
+  timerProgress.textContent = `00:00/${secondsToFullTime(timer.runtime)}`;
+  timerProgressBar.value = 0;
+  checkRound();
+  timerDisplay.textContent = `${timer.workTime}`;
+  console.log('reset');
   // load default settings
 };
 
@@ -166,7 +181,9 @@ function updateTimer() {
   console.log('updated');
 }
 
+resetTimer();
 timerStart.addEventListener('click', startTimer);
 timerPause.addEventListener('click', pauseTimer);
+timerReset.addEventListener('click', resetTimer);
 extBreakCheckbox.addEventListener('change', disableExtBreak);
 updateTimerButton.addEventListener('click', updateTimer);
