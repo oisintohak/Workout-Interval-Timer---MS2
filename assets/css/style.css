@@ -2,11 +2,21 @@
   height: 100vh;
 }
 
+#settings-button {
+  width: auto;
+}
+
 #t-display {
   font-size: 8rem;
   line-height: 1;
 }
 
-#settings-button {
-  width: auto;
+#t-progress-segments {
+  height: 3em;
+  display: flex;
+  justify-content: center;
+}
+
+#t-progress-bar {
+  height: 3em;
 }

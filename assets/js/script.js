@@ -5,6 +5,7 @@ const timerStart = document.querySelector('#t-start');
 const timerPause = document.querySelector('#t-pause');
 const timerReset = document.querySelector('#t-reset');
 const timerProgress = document.querySelector('#t-progress-time');
+const timerProgressSegments = document.querySelector('#t-progress-segments');
 const timerProgressBar = document.querySelector('#t-progress-bar');
 // SETTINGS ELEMENTS
 const workTimeInput = document.querySelector('#work-time');
@@ -23,7 +24,7 @@ const timer = {
   restTime: 10,
   numRounds: 9,
   countdown: true,
-  countdownTime: 5,
+  countdownTime: 0,
   countdownComplete: false,
   extBreak: true,
   extBreakLength: 30,
@@ -62,6 +63,28 @@ function calcRuntime () {
   timer.runtime = timer.rounds[timer.numRounds * 2].roundRuntime;
 };
 
+function createSegments() {
+  for (let i = 1; i <= timer.numRounds * 2; i ++) {
+    // calculate percentage of total runtime:
+    let span = document.createElement('span');
+    let p;
+    if (i % 2 !== 0) {
+      p = `${((timer.workTime / timer.runtime) * 100).toFixed(2)}%`;
+      span.textContent = 'work';
+      span.style.backgroundColor = 'red';
+    } 
+    else {
+      p = `${((timer.rounds[i].rest / timer.runtime) * 100).toFixed(2)}%`;
+      span.textContent = 'rest';
+      span.style.backgroundColor = 'green';
+    }
+    console.log(p);
+    span.style.width = p;
+
+    timerProgressSegments.appendChild(span);
+  }
+}
+
 function startTimer () {
   if (timer.countdown === true && timer.countdownComplete === false) {
     timer.countdownStartTime = new Date().getTime();
@@ -74,8 +97,9 @@ function startTimer () {
   if (timer.hasStarted === false) {
     timer.hasStarted = true;
     timer.currentRound = 1;
-    createRounds(timer);
-    calcRuntime(timer);
+    createRounds();
+    createSegments();
+    calcRuntime();
     timer.roundType = 'work';
     timer.timeElapsed = 0;
   }
@@ -99,12 +123,9 @@ function countdown () {
 };
 
 function runTimer() {
-  // unrounded value for smooth progress bar:
-  timer.timeElapsedMs = (new Date().getTime() - timer.startTime) / 1000;
-  timer.timeElapsed = Math.floor(timer.timeElapsedMs);
+  timer.timeElapsed = (new Date().getTime() - timer.startTime) / 1000;
   // if timer was paused, add previous elapsed time
   timer.timeElapsed += timer.timeElapsedOnPause;
-  timer.timeRemaining = timer.runtime - timer.timeElapsed;
   displayTime();
   displayProgress();
   checkRound();
@@ -134,8 +155,8 @@ function checkRound() {
 };
 
 function displayTime() {
-  timerDisplay.textContent = timer.rounds[timer.currentRound].roundRuntime - timer.timeElapsed;
-  timerProgress.textContent = `${secondsToFullTime(timer.timeElapsed)}/${secondsToFullTime(timer.runtime)}`;
+  timerDisplay.textContent = timer.rounds[timer.currentRound].roundRuntime - Math.floor(timer.timeElapsed);
+  timerProgress.textContent = `${secondsToFullTime(Math.floor(timer.timeElapsed))}/${secondsToFullTime(timer.runtime)}`;
 };
 
 function secondsToFullTime(seconds) {
@@ -148,7 +169,7 @@ function secondsToFullTime(seconds) {
 };
 
 function displayProgress() {
-  timerProgressBar.value = (timer.timeElapsedMs / timer.runtime) * 100;
+  timerProgressBar.value = (timer.timeElapsed / timer.runtime) * 100;
 };
 
 function displayMessage() {
