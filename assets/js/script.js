@@ -13,6 +13,8 @@ const roundsInput = document.querySelector('#rounds');
 const extBreakCheckbox = document.querySelector('#ext-break-checkbox');
 const extBreakRounds = document.querySelector('#ext-break-rounds');
 const extBreakTime = document.querySelector('#ext-break-time');
+const countdownCheckbox = document.querySelector('#countdown-checkbox');
+const countdownTime = document.querySelector('#countdown-time');
 const updateTimerButton = document.querySelector('#update-timer-button');
 const timer = {
   running: false,
@@ -20,6 +22,9 @@ const timer = {
   workTime: 30,
   restTime: 10,
   numRounds: 9,
+  countdown: true,
+  countdownTime: 5,
+  countdownComplete: false,
   extBreak: true,
   extBreakLength: 30,
   extBreakAfter: 3,
@@ -51,13 +56,18 @@ function createRounds() {
       timer.rounds[i].roundRuntime += timer.rounds[i-1].roundRuntime;
     }
   }
-}
+};
 
 function calcRuntime () {
   timer.runtime = timer.rounds[timer.numRounds * 2].roundRuntime;
-}
+};
 
 function startTimer () {
+  if (timer.countdown === true && timer.countdownComplete === false) {
+    timer.countdownStartTime = new Date().getTime();
+    timer.countdownID = setInterval(countdown, 100);
+    return;
+  }
   if (timer.running === true) {
     return;
   }
@@ -72,11 +82,23 @@ function startTimer () {
   timer.startTime = new Date().getTime();
   timer.running = true;
   displayMessage();
-  timer.intervalID = setInterval(countdown, 100);
+  if ((timer.countdown === true && timer.countdownComplete === true) || timer.countdown === false)
+  timer.intervalID = setInterval(runTimer, 100);
 };
 
+function countdown () {
+  timer.countdownElapsed = Math.floor((new Date().getTime() - timer.countdownStartTime)) / 1000;
+  timer.countdownRemaining = timer.countdownTime - timer.countdownElapsed;
+  timerDisplay.textContent = Math.floor(timer.countdownRemaining) + 1;
+  if (timer.countdownRemaining <= 0) {
+    timer.countdownComplete = true;
+    clearInterval(timer.countdownID);
+    console.log('countdownfin');
+    startTimer();
+  }
+};
 
-function countdown() {
+function runTimer() {
   // unrounded value for smooth progress bar:
   timer.timeElapsedMs = (new Date().getTime() - timer.startTime) / 1000;
   timer.timeElapsed = Math.floor(timer.timeElapsedMs);
@@ -86,7 +108,7 @@ function countdown() {
   displayTime();
   displayProgress();
   checkRound();
-}
+};
 
 function checkRound() {
   for (let i = 1; i <= timer.numRounds*2; i++) {
@@ -109,7 +131,7 @@ function checkRound() {
     pauseTimer();
     resetTimer();
   }
-}
+};
 
 function displayTime() {
   timerDisplay.textContent = timer.rounds[timer.currentRound].roundRuntime - timer.timeElapsed;
@@ -142,14 +164,14 @@ function displayMessage() {
   if (timer.roundType === 'rest' && timer.running === true) {
     timerMessage.textContent = 'Rest';
   }
-
-}
+};
 
 function pauseTimer() {
   if (timer.running === true) {
     clearInterval(timer.intervalID);
     timer.running = false;
     timer.timeElapsedOnPause = timer.timeElapsed;
+    timer.countdownComplete = false;
     displayMessage();
   }
   else {
@@ -176,7 +198,6 @@ function resetTimer() {
   timerDisplay.textContent = `${timer.workTime}`;
   displayMessage();
   console.log('reset');
-  // load default settings
 };
 
 function disableExtBreak() {
@@ -188,7 +209,7 @@ function disableExtBreak() {
     extBreakTime.disabled = true;
     extBreakRounds.disabled = true;
   }
-}
+};
 
 function updateTimer() {
   pauseTimer();
@@ -201,9 +222,11 @@ function updateTimer() {
   timer.extBreakLength = parseFloat(extBreakTime.value);
   timer.extBreakAfter = parseFloat(extBreakRounds.value);
   timer.timeElapsedOnPause = 0;
+  countdownCheckbox.checked === true ? timer.countdown = true : timer.countdown = false;
+  timer.countdownTime = parseFloat(countdownTime.value);
   resetTimer();
   console.log('updated');
-}
+};
 
 resetTimer();
 timerStart.addEventListener('click', startTimer);
