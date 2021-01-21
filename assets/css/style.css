@@ -38,3 +38,8 @@
 #t-progress-time {
   margin-top: -2em;
 }
+
+#modal-form fieldset {
+  background-color: #777;
+  border-radius: 4px;
+}

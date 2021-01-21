@@ -23,31 +23,35 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
               </div>
               <div class="modal-body">
-                <fieldset>
-                  <label for="work-time">Work Time:</label>
-                  <input type="number" id="work-time" name="work-time" value="30" step="1" min="1">
-                  <label for="work-time">seconds</label> <br>
-                  <label for="rest-time">Rest Time:</label>
-                  <input type="number" id="rest-time" name="rest-time" value="10" step="1" min="1">
-                  <label for="rest-time">seconds</label> <br>
-                  <label for="rounds">Number of rounds:</label>
-                  <input type="number" id="rounds" name="rounds" value="8" step="1" min="1" max="50"> <br>
-                </fieldset>
-                <fieldset>
-                  <input type="checkbox" id="ext-break-checkbox" checked>
-                  <label for="ext-break-checkbox">Extended break after every:</label>
-                  <input type="number" id="ext-break-rounds" name="ext-break" value="3" step="1" min="1">
-                  <label for="ext-break-rounds">rounds</label>
-                  <label for="ext-break-time">for</label>
-                  <input type="number" id="ext-break-time" value="30" step="1" min="1">
-                  <label for="ext-break-time">seconds</label> <br>
-                  <input type="checkbox" id="countdown-checkbox" checked>
-                  <label for="countdown-checkbox">Add countdown of</label>
-                  <input type="number" id="countdown-time" value="5" min="1" step="1"><label for="countdown-time">seconds before starting</label>
-                </fieldset>
+                <form id="modal-form" action="">
+                  <fieldset class="mb-3">
+                    <label for="work-time">Work Time:</label>
+                    <input type="number" id="work-time" name="work-time" value="30" step="1" min="1" required>
+                    <label for="work-time">seconds</label> <br>
+                    <label for="rest-time">Rest Time:</label>
+                    <input type="number" id="rest-time" name="rest-time" value="10" step="1" min="1" required>
+                    <label for="rest-time">seconds</label> <br>
+                    <label for="rounds">Number of rounds:</label>
+                    <input type="number" id="rounds" name="rounds" value="9" step="1" min="1" max="50" required> <br>
+                  </fieldset>
+                  <fieldset class="mb-3">
+                    <input type="checkbox" id="ext-break-checkbox" checked>
+                    <label for="ext-break-checkbox">Extended break after every:</label>
+                    <input type="number" id="ext-break-rounds" name="ext-break" value="3" step="1" min="1" required>
+                    <label for="ext-break-rounds">rounds</label>
+                    <label for="ext-break-time">for</label>
+                    <input type="number" id="ext-break-time" value="30" step="1" min="1" required>
+                    <label for="ext-break-time">seconds</label> <br>
+                  </fieldset>
+                  <fieldset class="mb-3">
+                    <input type="checkbox" id="countdown-checkbox" checked>
+                    <label for="countdown-checkbox">Add countdown of</label>
+                    <input type="number" id="countdown-time" value="5" min="1" step="1" required><label for="countdown-time">seconds before starting</label>
+                  </fieldset>
+                  <button id="update-timer-button" type="submit" class="btn btn-primary">Update Timer</button>
+                </form>
               </div>
-              <div class="modal-footer">
-                <button id="update-timer-button" type="button" class="btn btn-primary">Update Timer</button>
+              <div class="modal-footer">                
               </div>
             </div>
           </div>

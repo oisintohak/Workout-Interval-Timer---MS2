@@ -1,12 +1,3 @@
-// TIMER ELEMENTS
-const timerDisplay = document.querySelector('#t-display');
-const timerMessage = document.querySelector('#t-message');
-const timerStart = document.querySelector('#t-start');
-const timerPause = document.querySelector('#t-pause');
-const timerReset = document.querySelector('#t-reset');
-const timerProgress = document.querySelector('#t-progress-time');
-const timerProgressSegments = document.querySelector('#t-progress-segments');
-const timerProgressOverlay = document.querySelector('#t-progress-overlay');
 // SETTINGS ELEMENTS
 const workTimeInput = document.querySelector('#work-time');
 const restTimeInput = document.querySelector('#rest-time');
@@ -16,7 +7,17 @@ const extBreakRounds = document.querySelector('#ext-break-rounds');
 const extBreakTime = document.querySelector('#ext-break-time');
 const countdownCheckbox = document.querySelector('#countdown-checkbox');
 const countdownTime = document.querySelector('#countdown-time');
-const updateTimerButton = document.querySelector('#update-timer-button');
+const modalForm = document.querySelector('#modal-form');
+// TIMER ELEMENTS
+const timerDisplay = document.querySelector('#t-display');
+const timerMessage = document.querySelector('#t-message');
+const timerStart = document.querySelector('#t-start');
+const timerPause = document.querySelector('#t-pause');
+const timerReset = document.querySelector('#t-reset');
+const timerProgressSegments = document.querySelector('#t-progress-segments');
+const timerProgressOverlay = document.querySelector('#t-progress-overlay');
+const timerProgress = document.querySelector('#t-progress-time');
+
 const timer = {
   running: false,
   hasStarted: false,
@@ -24,14 +25,13 @@ const timer = {
   restTime: 10,
   numRounds: 9,
   countdown: true,
-  countdownTime: 0,
+  countdownTime: 5,
   countdownComplete: false,
   extBreak: true,
   extBreakLength: 30,
   extBreakAfter: 3,
   timeElapsedOnPause: 0
 };
-const settings = {};
 
 function createRounds() {
   timer.rounds = {};
@@ -85,13 +85,6 @@ function createSegments() {
   }
 }
 
-function createProgressBar() {
-  for (let i = 1; i <= timer.numRounds * 2; i ++) {
-    let p;
-    let bar = `<div class="progress-bar" role="progressbar" style="width: 15%" aria-valuenow="15" aria-valuemin="0" aria-valuemax="100"></div>`
-  }
-}
-
 function startTimer () {
   if (timer.countdown === true && timer.countdownComplete === false) {
     timer.countdownStartTime = new Date().getTime();
@@ -113,6 +106,7 @@ function startTimer () {
   timer.startTime = new Date().getTime();
   timer.running = true;
   displayMessage();
+  changeColor();
   if ((timer.countdown === true && timer.countdownComplete === true) || timer.countdown === false)
   timer.intervalID = setInterval(runTimer, 100);
 };
@@ -144,10 +138,12 @@ function checkRound() {
       timer.currentRound = i + 1;
       if (timer.currentRound % 2 === 0) {
         timer.roundType = 'rest';
+        changeColor('red');
         displayMessage();
       }
       else {
         timer.roundType = 'work';
+        changeColor('green'); 
         displayMessage();
       }
       //change color scheme
@@ -194,6 +190,29 @@ function displayMessage() {
   }
 };
 
+function changeColor(color) {
+  let body = document.querySelector('body');
+  if (!color) {
+    if (timer.currentRound % 2 === 0) {
+      changeColor('red');
+    }
+    else {
+      changeColor('green');
+    }
+  }
+  if (color == 'blue') {
+    body.style.backgroundColor = '#00CED1';
+  }
+  if (color == 'red') {
+    body.style.backgroundColor = '#ff6347';
+  }
+  if (color == 'green') {
+    body.style.backgroundColor = '#59dd5e';
+  }
+  if (color == 'orange') {
+    body.style.backgroundColor = '#ffc352';
+  }
+}
 
 function pauseTimer() {
   if (timer.running === true) {
@@ -202,6 +221,7 @@ function pauseTimer() {
     timer.timeElapsedOnPause = timer.timeElapsed;
     timer.countdownComplete = false;
     displayMessage();
+    changeColor('orange');
   }
   else {
     return;
@@ -227,6 +247,7 @@ function resetTimer() {
   timerDisplay.textContent = `${timer.workTime}`;
   createSegments();
   displayMessage();
+  changeColor('blue');
 };
 
 function disableExtBreak() {
@@ -240,7 +261,16 @@ function disableExtBreak() {
   }
 };
 
-function updateTimer() {
+function disableCountdown() {
+  if (countdownCheckbox.checked) {
+    countdownTime.disabled = false;
+  }
+  else {
+    countdownTime.disabled = true;
+  }
+};
+
+function updateTimer(event) {
   pauseTimer();
   timer.running = false;
   timer.hasStarted = false;
@@ -255,11 +285,20 @@ function updateTimer() {
   timer.countdownTime = parseFloat(countdownTime.value);
   resetTimer();
   console.log('updated');
+  event.preventDefault();
+  closeModal();
 };
+
+function closeModal() {
+  let modalElement = document.querySelector('#staticBackdrop');
+  let modal = bootstrap.Modal.getInstance(modalElement);
+  modal.hide();
+}
 
 resetTimer();
 timerStart.addEventListener('click', startTimer);
 timerPause.addEventListener('click', pauseTimer);
 timerReset.addEventListener('click', resetTimer);
 extBreakCheckbox.addEventListener('change', disableExtBreak);
-updateTimerButton.addEventListener('click', updateTimer);
+countdownCheckbox.addEventListener('change', disableCountdown);
+modalForm.addEventListener('submit', updateTimer);
