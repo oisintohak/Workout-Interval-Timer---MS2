@@ -6,6 +6,15 @@
   width: auto;
 }
 
+#modal-form .number-input {
+  width: 4em;
+}
+
+#modal-form fieldset {
+  background-color: #777;
+  border-radius: 4px;
+}
+
 #t-display {
   font-size: 8rem;
   line-height: 1;
@@ -37,9 +46,4 @@
 
 #t-progress-time {
   margin-top: -2em;
-}
-
-#modal-form fieldset {
-  background-color: #777;
-  border-radius: 4px;
 }

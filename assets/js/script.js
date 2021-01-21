@@ -118,7 +118,6 @@ function countdown () {
   if (timer.countdownRemaining <= 0) {
     timer.countdownComplete = true;
     clearInterval(timer.countdownID);
-    console.log('countdownfin');
     startTimer();
   }
 };
@@ -146,19 +145,24 @@ function checkRound() {
         changeColor('green'); 
         displayMessage();
       }
-      //change color scheme
-      //audio alert
     }
   }
   if (timer.currentRound > (timer.numRounds*2)) {
-    console.log('finish!');
+    // when timer completes:
     pauseTimer();
     resetTimer();
+    timerMessage.textContent = '-';
+    timerDisplay.textContent = 'DONE!';
+    changeColor('blue');
+    // manual completion of progress bar in case of negative value:
+    timerProgressOverlay.style.width = '0%';
   }
 };
 
 function displayTime() {
-  timerDisplay.textContent = timer.rounds[timer.currentRound].roundRuntime - Math.floor(timer.timeElapsed);
+  let time = timer.rounds[timer.currentRound].roundRuntime - Math.floor(timer.timeElapsed);
+  // prevent display from briefly flashing to 0 between rounds:
+  time == 0 ? timerDisplay.textContent = 1 : timerDisplay.textContent = time;
   timerProgress.textContent = `${secondsToFullTime(Math.floor(timer.timeElapsed))}/${secondsToFullTime(timer.runtime)}`;
 };
 
@@ -242,7 +246,7 @@ function resetTimer() {
   calcRuntime();
   timerDisplay.textContent = '00';
   timerProgress.textContent = `00:00/${secondsToFullTime(timer.runtime)}`;
-  // timerProgressBar.value = 0;
+  timerProgressOverlay.style.width = '100%';
   checkRound();
   timerDisplay.textContent = `${timer.workTime}`;
   createSegments();
@@ -284,7 +288,6 @@ function updateTimer(event) {
   countdownCheckbox.checked === true ? timer.countdown = true : timer.countdown = false;
   timer.countdownTime = parseFloat(countdownTime.value);
   resetTimer();
-  console.log('updated');
   event.preventDefault();
   closeModal();
 };
@@ -293,7 +296,7 @@ function closeModal() {
   let modalElement = document.querySelector('#staticBackdrop');
   let modal = bootstrap.Modal.getInstance(modalElement);
   modal.hide();
-}
+};
 
 resetTimer();
 timerStart.addEventListener('click', startTimer);
