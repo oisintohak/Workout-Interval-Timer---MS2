@@ -15,8 +15,26 @@
   height: 3em;
   display: flex;
   justify-content: center;
+  border: 2px solid #777;
+  border-radius: 8px;
+  overflow: hidden;
+}
+#t-progress-segments span {
+  padding-top: 1.4em;
+  font-size: x-small;
 }
 
-#t-progress-bar {
+#t-progress-overlay {
   height: 3em;
+  background: rgba(187,187,187,0.9);
+  position: relative;
+  top: -3em;
+  width: 100%;
+  border-radius: 8px;
+  overflow: hidden;
+  margin-left: auto;
+}
+
+#t-progress-time {
+  margin-top: -2em;
 }

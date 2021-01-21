@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
+  <title>Workout Timer</title>
   <link rel="stylesheet" href="assets/css/bootstrap.min.css">
   <link rel="stylesheet" href="assets/css/style.css">
 </head>
@@ -12,11 +12,9 @@
     <div class="col-auto">
       <div class="row">
           <!-- Button trigger modal -->
-        <button id="settings-button" type="button" class="btn btn-primary mx-auto" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
-          Timer Settings
-        </button>
+        <button id="settings-button" type="button" class="btn btn-primary mx-auto" data-bs-toggle="modal" data-bs-target="#staticBackdrop">Timer Settings</button>
       
-        <!-- Modal -->
+        <!-- MODAL FOR SETTINGS -->
         <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
           <div class="modal-dialog">
             <div class="modal-content">
@@ -59,22 +57,30 @@
 
     <div class="col-12">
       <div class="row">
+        <!-- NUMBER DISPLAY -->
         <div id="t-display" class="text-center">
           
         </div>
+        <!-- MESSAGE DISPLAY -->
         <div id="t-message" class="text-center">
 
         </div>
-        <div class="text-center">
+        <!-- TIMER BUTTONS -->
+        <div class="text-center my-3">
           <button type="button" id="t-start" class="btn btn-primary">START</button>
           <button type="button" id="t-pause" class="btn btn-primary">PAUSE</button>
           <button type="button" id="t-reset" class="btn btn-primary">RESET</button>
         </div>
         <div id="progress" class="text-center">
+          <!-- PROGRESS SEGMENTS -->
           <div class="col-12" id="t-progress-segments">
 
           </div>
-          <progress id="t-progress-bar" class="w-100" max="100" value="0"></progress>
+          <!-- PROGRESS OVERLAY -->
+          <div class="col-12" id="t-progress-overlay">
+
+          </div>
+          <!-- PROGRESS TIME -->
           <div id="t-progress-time">
 
           </div>

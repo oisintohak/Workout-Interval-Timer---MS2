@@ -6,7 +6,7 @@ const timerPause = document.querySelector('#t-pause');
 const timerReset = document.querySelector('#t-reset');
 const timerProgress = document.querySelector('#t-progress-time');
 const timerProgressSegments = document.querySelector('#t-progress-segments');
-const timerProgressBar = document.querySelector('#t-progress-bar');
+const timerProgressOverlay = document.querySelector('#t-progress-overlay');
 // SETTINGS ELEMENTS
 const workTimeInput = document.querySelector('#work-time');
 const restTimeInput = document.querySelector('#rest-time');
@@ -64,24 +64,31 @@ function calcRuntime () {
 };
 
 function createSegments() {
+  timerProgressSegments.innerHTML = '';
   for (let i = 1; i <= timer.numRounds * 2; i ++) {
     // calculate percentage of total runtime:
     let span = document.createElement('span');
     let p;
     if (i % 2 !== 0) {
       p = `${((timer.workTime / timer.runtime) * 100).toFixed(2)}%`;
-      span.textContent = 'work';
-      span.style.backgroundColor = 'red';
+      span.textContent = 'W';
+      span.style.backgroundColor = '#59dd5e';
     } 
     else {
       p = `${((timer.rounds[i].rest / timer.runtime) * 100).toFixed(2)}%`;
-      span.textContent = 'rest';
-      span.style.backgroundColor = 'green';
+      span.textContent = 'R';
+      span.style.backgroundColor = '#ff6347';
     }
-    console.log(p);
     span.style.width = p;
 
     timerProgressSegments.appendChild(span);
+  }
+}
+
+function createProgressBar() {
+  for (let i = 1; i <= timer.numRounds * 2; i ++) {
+    let p;
+    let bar = `<div class="progress-bar" role="progressbar" style="width: 15%" aria-valuenow="15" aria-valuemin="0" aria-valuemax="100"></div>`
   }
 }
 
@@ -169,7 +176,7 @@ function secondsToFullTime(seconds) {
 };
 
 function displayProgress() {
-  timerProgressBar.value = (timer.timeElapsed / timer.runtime) * 100;
+  timerProgressOverlay.style.width = `${100 - ((timer.timeElapsed / timer.runtime) * 100)}%`;
 };
 
 function displayMessage() {
@@ -186,6 +193,7 @@ function displayMessage() {
     timerMessage.textContent = 'Rest';
   }
 };
+
 
 function pauseTimer() {
   if (timer.running === true) {
@@ -214,11 +222,11 @@ function resetTimer() {
   calcRuntime();
   timerDisplay.textContent = '00';
   timerProgress.textContent = `00:00/${secondsToFullTime(timer.runtime)}`;
-  timerProgressBar.value = 0;
+  // timerProgressBar.value = 0;
   checkRound();
   timerDisplay.textContent = `${timer.workTime}`;
+  createSegments();
   displayMessage();
-  console.log('reset');
 };
 
 function disableExtBreak() {
