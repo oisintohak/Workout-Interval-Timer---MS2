@@ -47,3 +47,9 @@
 #t-progress-time {
   margin-top: -2em;
 }
+
+.button-disabled {
+  /* use '!important' to override bootstrap styles */
+  background: #666 !important;
+  text-decoration: line-through;
+}

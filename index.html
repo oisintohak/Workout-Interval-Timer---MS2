@@ -46,7 +46,7 @@
                   <fieldset class="mb-3">
                     <input type="checkbox" id="countdown-checkbox" checked>
                     <label for="countdown-checkbox">Add countdown of</label>
-                    <input type="number" id="countdown-time" class="number-input" value="5" min="1" step="1" required><label for="countdown-time">seconds before starting</label>
+                    <input type="number" id="countdown-time" class="number-input" value="5" min="1" step="1" required><label for="countdown-time">seconds before starting the timer</label>
                   </fieldset>
                   <button id="update-timer-button" type="submit" class="btn btn-primary">Update Timer</button>
                 </form>
@@ -72,7 +72,7 @@
         <!-- TIMER BUTTONS -->
         <div class="text-center my-3">
           <button type="button" id="t-start" class="btn btn-primary">START</button>
-          <button type="button" id="t-pause" class="btn btn-primary">PAUSE</button>
+          <button type="button" id="t-pause" class="btn btn-primary button-disabled" disabled>PAUSE</button>
           <button type="button" id="t-reset" class="btn btn-primary">RESET</button>
         </div>
         <div id="progress" class="text-center">

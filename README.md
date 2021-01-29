@@ -45,3 +45,7 @@ This is the second Milestone Project for the Code Institute course.
  - Timer function needss to differentiate between work & rest times.
  - When paused, current round number needs to be saved
  - Add all round times to get total runtime, keep track of elapsed time and compare to length of rounds to calculate current round.
+
+### - Issues
+ - When start button is pressed during countdown the timer becomes unresponsive until page is refreshed.
+   - Fixed by disabling start and pause buttons when they are pressed.

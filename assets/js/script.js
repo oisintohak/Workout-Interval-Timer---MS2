@@ -92,12 +92,14 @@ function createSegments() {
 
 // run the timer when start button is pressed
 function startTimer () {
-  if (timer.countdown === true && timer.countdownComplete === false) {
-    timer.countdownStartTime = new Date().getTime();
-    timer.countdownID = setInterval(countdown, 100);
+  if (timer.running) {
     return;
   }
-  if (timer.running) {
+  toggleStartButton('disable');
+  togglePauseButton('enable');
+  if (timer.countdown && !timer.countdownComplete) {
+    timer.countdownStartTime = new Date().getTime();
+    timer.countdownID = setInterval(countdown, 100);
     return;
   }
   if (!timer.hasStarted) {
@@ -115,6 +117,18 @@ function startTimer () {
   changeColor();
   if ((timer.countdown && timer.countdownComplete) || !timer.countdown)
   timer.intervalID = setInterval(runTimer, 100);
+};
+
+// enable/disable start button
+function toggleStartButton (state) {
+  if (state === 'enable') {
+    timerStart.disabled = false;
+    timerStart.classList.remove('button-disabled');
+  }
+  else {
+    timerStart.disabled = true;
+    timerStart.classList.add('button-disabled');
+  }
 };
 
 // run the countdown for the specified time
@@ -236,6 +250,11 @@ function changeColor(color) {
 // cease the recurring function and record the time elapsed
 // change the message and color to reflect the timer state
 function pauseTimer() {
+  togglePauseButton('disable');
+  toggleStartButton('enable');
+  if (timer.countdown && !timer.countdownComplete) {
+    clearInterval(timer.countdownID);
+  }
   if (timer.running) {
     clearInterval(timer.intervalID);
     timer.running = false;
@@ -245,6 +264,18 @@ function pauseTimer() {
     changeColor('orange');
   }
 };
+
+// enable/disable pause button
+function togglePauseButton (state) {
+  if (state === 'enable') {
+    timerPause.disabled = false;
+    timerPause.classList.remove('button-disabled');
+  }
+  else {
+    timerPause.disable = true;
+    timerPause.classList.add('button-disabled');
+  }
+}
 
 // clear any recorded elapsed time and clear the display and progress
 function resetTimer() {
