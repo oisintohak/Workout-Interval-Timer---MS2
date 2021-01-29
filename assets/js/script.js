@@ -18,6 +18,7 @@ const timerProgressSegments = document.querySelector('#t-progress-segments');
 const timerProgressOverlay = document.querySelector('#t-progress-overlay');
 const timerProgress = document.querySelector('#t-progress-time');
 
+// object to store default settings and values
 const timer = {
   running: false,
   hasStarted: false,
@@ -33,6 +34,8 @@ const timer = {
   timeElapsedOnPause: 0
 };
 
+// create objects nested in an array to store times for each round
+// and accumulated time
 function createRounds() {
   timer.rounds = {};
   for (let i = 1; i <= timer.numRounds*2; i ++) {
@@ -59,16 +62,18 @@ function createRounds() {
   }
 };
 
+// calculate total runtime
 function calcRuntime () {
   timer.runtime = timer.rounds[timer.numRounds * 2].roundRuntime;
 };
 
+// create segments for work/rest periods in progress bar
 function createSegments() {
   timerProgressSegments.innerHTML = '';
   for (let i = 1; i <= timer.numRounds * 2; i ++) {
-    // calculate percentage of total runtime:
     let span = document.createElement('span');
     let p;
+    // calculate percentage of total runtime(p):
     if (i % 2 !== 0) {
       p = `${((timer.workTime / timer.runtime) * 100).toFixed(2)}%`;
       span.textContent = 'W';
@@ -85,16 +90,17 @@ function createSegments() {
   }
 }
 
+// run the timer when start button is pressed
 function startTimer () {
   if (timer.countdown === true && timer.countdownComplete === false) {
     timer.countdownStartTime = new Date().getTime();
     timer.countdownID = setInterval(countdown, 100);
     return;
   }
-  if (timer.running === true) {
+  if (timer.running) {
     return;
   }
-  if (timer.hasStarted === false) {
+  if (!timer.hasStarted) {
     timer.hasStarted = true;
     timer.currentRound = 1;
     createRounds();
@@ -107,10 +113,11 @@ function startTimer () {
   timer.running = true;
   displayMessage();
   changeColor();
-  if ((timer.countdown === true && timer.countdownComplete === true) || timer.countdown === false)
+  if ((timer.countdown && timer.countdownComplete) || !timer.countdown)
   timer.intervalID = setInterval(runTimer, 100);
 };
 
+// run the countdown for the specified time
 function countdown () {
   timer.countdownElapsed = Math.floor((new Date().getTime() - timer.countdownStartTime)) / 1000;
   timer.countdownRemaining = timer.countdownTime - timer.countdownElapsed;
@@ -122,6 +129,7 @@ function countdown () {
   }
 };
 
+// compare the current time to the start time and calulate remaining time
 function runTimer() {
   timer.timeElapsed = (new Date().getTime() - timer.startTime) / 1000;
   // if timer was paused, add previous elapsed time
@@ -131,6 +139,8 @@ function runTimer() {
   checkRound();
 };
 
+// calculate the current round number
+// change the color and message if the round has changed
 function checkRound() {
   for (let i = 1; i <= timer.numRounds*2; i++) {
     if (timer.timeElapsed >= timer.rounds[i].roundRuntime) {
@@ -147,8 +157,8 @@ function checkRound() {
       }
     }
   }
+  // when timer completes:
   if (timer.currentRound > (timer.numRounds*2)) {
-    // when timer completes:
     pauseTimer();
     resetTimer();
     timerMessage.textContent = '-';
@@ -159,6 +169,7 @@ function checkRound() {
   }
 };
 
+// calculate the remaining time in the current round and display it
 function displayTime() {
   let time = timer.rounds[timer.currentRound].roundRuntime - Math.floor(timer.timeElapsed);
   // prevent display from briefly flashing to 0 between rounds:
@@ -166,6 +177,7 @@ function displayTime() {
   timerProgress.textContent = `${secondsToFullTime(Math.floor(timer.timeElapsed))}/${secondsToFullTime(timer.runtime)}`;
 };
 
+// convert milliseconds to time in '00:00' format
 function secondsToFullTime(seconds) {
   let min = `${Math.floor(seconds / 60)}`;
   let sec = (seconds % 60).toString();
@@ -175,25 +187,28 @@ function secondsToFullTime(seconds) {
   return `${min}:${sec}`;
 };
 
+// calculate the percentage of runtime completed and update progress bar
 function displayProgress() {
   timerProgressOverlay.style.width = `${100 - ((timer.timeElapsed / timer.runtime) * 100)}%`;
 };
 
+// display the appropriate message according to the round and the state of the timer
 function displayMessage() {
-  if (timer.hasStarted === false) {
+  if (!timer.hasStarted) {
     timerMessage.textContent = 'Ready';
   }
-  if (timer.hasStarted === true && timer.running === false) {
+  if (timer.hasStarted && !timer.running) {
     timerMessage.textContent = 'Paused';
   }
-  if (timer.roundType === 'work' && timer.running === true) {
+  if (timer.roundType === 'work' && timer.running) {
     timerMessage.textContent = 'GO!';
   } 
-  if (timer.roundType === 'rest' && timer.running === true) {
+  if (timer.roundType === 'rest' && timer.running) {
     timerMessage.textContent = 'Rest';
   }
 };
 
+// change the background color to reflect the current timer state
 function changeColor(color) {
   let body = document.querySelector('body');
   if (!color) {
@@ -218,8 +233,10 @@ function changeColor(color) {
   }
 }
 
+// cease the recurring function and record the time elapsed
+// change the message and color to reflect the timer state
 function pauseTimer() {
-  if (timer.running === true) {
+  if (timer.running) {
     clearInterval(timer.intervalID);
     timer.running = false;
     timer.timeElapsedOnPause = timer.timeElapsed;
@@ -227,11 +244,9 @@ function pauseTimer() {
     displayMessage();
     changeColor('orange');
   }
-  else {
-    return;
-  }
 };
 
+// clear any recorded elapsed time and clear the display and progress
 function resetTimer() {
   pauseTimer();
   timer.currentRound = 1;
@@ -254,6 +269,7 @@ function resetTimer() {
   changeColor('blue');
 };
 
+// if checkbox is changed, disable related inputs
 function disableExtBreak() {
   if (extBreakCheckbox.checked) {
     extBreakRounds.disabled = false;
@@ -265,6 +281,7 @@ function disableExtBreak() {
   }
 };
 
+// if checkbox is changed, disable related inputs
 function disableCountdown() {
   if (countdownCheckbox.checked) {
     countdownTime.disabled = false;
@@ -274,6 +291,7 @@ function disableCountdown() {
   }
 };
 
+// update timer settings with values from user input
 function updateTimer(event) {
   pauseTimer();
   timer.running = false;
@@ -292,13 +310,17 @@ function updateTimer(event) {
   closeModal();
 };
 
+// target and close the settings modal
 function closeModal() {
-  let modalElement = document.querySelector('#staticBackdrop');
+  let modalElement = document.querySelector('#settingsModal');
   let modal = bootstrap.Modal.getInstance(modalElement);
   modal.hide();
 };
 
+// reset the timer when the page loads to display message and change color:
 resetTimer();
+
+// EVENT LISTENERS:
 timerStart.addEventListener('click', startTimer);
 timerPause.addEventListener('click', pauseTimer);
 timerReset.addEventListener('click', resetTimer);
