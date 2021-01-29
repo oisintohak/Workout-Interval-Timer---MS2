@@ -7,6 +7,13 @@ This is the second Milestone Project for the Code Institute course.
 
 ### - Strategy - What are we aiming to achieve and for whom?
 #### For the user: 
+- We want to make a timer that keeps time accurately.
+- We want to make a timer that can be used for interval workouts.
+- We want a timer that can take user input to change the work/rest times.
+- We want a progress bar that shows overall progress and progress within each round.
+- We want an interface that will change appearance depending on the state of the timer and display an appropriate message.
+- We want a timer that can do a count-down before starting so users have time to prepare.
+- We want an audio cue to signal the end of a work/rest period.
 - We want to create a website that is easy and intuitive to use.
 - We want to create a site that is easy to view on all screen sizes.
 - 
