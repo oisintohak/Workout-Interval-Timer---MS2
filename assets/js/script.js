@@ -18,6 +18,9 @@ const timerReset = document.querySelector('#t-reset');
 const timerProgressSegments = document.querySelector('#t-progress-segments');
 const timerProgressOverlay = document.querySelector('#t-progress-overlay');
 const timerProgress = document.querySelector('#t-progress-time');
+// AUDIO
+const shortBeep = new Audio('../audio/short.mp3');
+const longBeep = new Audio('../audio/long.mp3');
 
 // object to store default settings and values
 const timer = {
@@ -137,7 +140,9 @@ function toggleStartButton (state) {
 function countdown () {
   timer.countdownElapsed = Math.floor((new Date().getTime() - timer.countdownStartTime)) / 1000;
   timer.countdownRemaining = timer.countdownTime - timer.countdownElapsed;
-  timerDisplay.textContent = Math.floor(timer.countdownRemaining) + 1;
+  let next = Math.floor(timer.countdownRemaining) + 1;
+  beep(timerDisplay.textContent, next);
+  timerDisplay.textContent = next;
   if (timer.countdownRemaining <= 0) {
     timer.countdownComplete = true;
     clearInterval(timer.countdownID);
@@ -154,6 +159,17 @@ function runTimer() {
   displayProgress();
   checkRound();
 };
+
+function beep (current, next) {
+  if (current <= 4 && next < current) {
+    if (current == 1) {
+      longBeep.play();
+    }
+    else {
+      shortBeep.play();
+    }
+  }
+}
 
 // calculate the current round number
 // change the color and message if the round has changed
@@ -188,6 +204,7 @@ function checkRound() {
 // calculate the remaining time in the current round and display it
 function displayTime() {
   let time = timer.rounds[timer.currentRound].roundRuntime - Math.floor(timer.timeElapsed);
+  beep(timerDisplay.textContent, time);
   // prevent display from briefly flashing to 0 between rounds:
   time == 0 ? timerDisplay.textContent = 1 : timerDisplay.textContent = time;
   timerProgress.textContent = `${secondsToFullTime(Math.floor(timer.timeElapsed))}/${secondsToFullTime(timer.runtime)}`;

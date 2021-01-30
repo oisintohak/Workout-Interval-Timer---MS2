@@ -49,3 +49,10 @@ This is the second Milestone Project for the Code Institute course.
 ### - Issues
  - When start button is pressed during countdown the timer becomes unresponsive until page is refreshed.
    - Fixed by disabling start and pause buttons when they are pressed.
+
+### - Credits
+  #### - Code
+  - The method for keeping time accurately (by comparing a current Date object to one previously recorded) was taken from [this article by Jamie Uttariello](https://olinations.medium.com/an-accurate-vanilla-js-stopwatch-script-56ceb5c6f45b)
+
+  #### - Audio
+    - The beep sounds used in the timer were taken from [https://mixkit.co/free-sound-effects/beep/](https://mixkit.co/free-sound-effects/beep/)
