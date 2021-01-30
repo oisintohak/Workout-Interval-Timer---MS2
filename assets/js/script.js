@@ -7,6 +7,7 @@ const extBreakRounds = document.querySelector('#ext-break-rounds');
 const extBreakTime = document.querySelector('#ext-break-time');
 const countdownCheckbox = document.querySelector('#countdown-checkbox');
 const countdownTime = document.querySelector('#countdown-time');
+const cancelModalButton = document.querySelector('#cancel-button');
 const modalForm = document.querySelector('#modal-form');
 // TIMER ELEMENTS
 const timerDisplay = document.querySelector('#t-display');
@@ -99,6 +100,7 @@ function startTimer () {
   togglePauseButton('enable');
   if (timer.countdown && !timer.countdownComplete) {
     timer.countdownStartTime = new Date().getTime();
+    displayMessage('Get Ready...');
     timer.countdownID = setInterval(countdown, 100);
     return;
   }
@@ -113,7 +115,7 @@ function startTimer () {
   }
   timer.startTime = new Date().getTime();
   timer.running = true;
-  displayMessage();
+  displayMessage('GO!');
   changeColor();
   if ((timer.countdown && timer.countdownComplete) || !timer.countdown)
   timer.intervalID = setInterval(runTimer, 100);
@@ -162,12 +164,12 @@ function checkRound() {
       if (timer.currentRound % 2 === 0) {
         timer.roundType = 'rest';
         changeColor('red');
-        displayMessage();
+        displayMessage('Rest');
       }
       else {
         timer.roundType = 'work';
         changeColor('green'); 
-        displayMessage();
+        displayMessage('GO!');
       }
     }
   }
@@ -207,24 +209,14 @@ function displayProgress() {
 };
 
 // display the appropriate message according to the round and the state of the timer
-function displayMessage() {
-  if (!timer.hasStarted) {
-    timerMessage.textContent = 'Ready';
-  }
-  if (timer.hasStarted && !timer.running) {
-    timerMessage.textContent = 'Paused';
-  }
-  if (timer.roundType === 'work' && timer.running) {
-    timerMessage.textContent = 'GO!';
-  } 
-  if (timer.roundType === 'rest' && timer.running) {
-    timerMessage.textContent = 'Rest';
-  }
+function displayMessage(message) {
+  timerMessage.textContent = message;
 };
 
 // change the background color to reflect the current timer state
 function changeColor(color) {
   let body = document.querySelector('body');
+  // if function was called without argument, check current round:
   if (!color) {
     if (timer.currentRound % 2 === 0) {
       changeColor('red');
@@ -260,7 +252,7 @@ function pauseTimer() {
     timer.running = false;
     timer.timeElapsedOnPause = timer.timeElapsed;
     timer.countdownComplete = false;
-    displayMessage();
+    displayMessage('Paused');
     changeColor('orange');
   }
 };
@@ -296,7 +288,7 @@ function resetTimer() {
   checkRound();
   timerDisplay.textContent = `${timer.workTime}`;
   createSegments();
-  displayMessage();
+  displayMessage('Press Start');
   changeColor('blue');
 };
 
@@ -348,6 +340,21 @@ function closeModal() {
   modal.hide();
 };
 
+// close modal and reset inputs to current value
+function cancelModal() {
+  workTimeInput.value = timer.workTime;
+  restTimeInput.value = timer.restTime;
+  roundsInput.value = timer.numRounds;
+  timer.extBreak ? extBreakCheckbox.checked = true : extBreakCheckbox.checked = false;
+  disableExtBreak();
+  extBreakTime.value = timer.extBreakLength;
+  extBreakRounds.value = timer.extBreakAfter;
+  timer.countdown ? countdownCheckbox.checked = true : countdownCheckbox.checked = false;
+  disableCountdown();
+  countdownTime.value = timer.countdownTime;
+  closeModal();
+}
+
 // reset the timer when the page loads to display message and change color:
 resetTimer();
 
@@ -357,4 +364,5 @@ timerPause.addEventListener('click', pauseTimer);
 timerReset.addEventListener('click', resetTimer);
 extBreakCheckbox.addEventListener('change', disableExtBreak);
 countdownCheckbox.addEventListener('change', disableCountdown);
+cancelModalButton.addEventListener('click', cancelModal);
 modalForm.addEventListener('submit', updateTimer);
