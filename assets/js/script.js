@@ -15,6 +15,7 @@ const timerMessage = document.querySelector('#t-message');
 const timerStart = document.querySelector('#t-start');
 const timerPause = document.querySelector('#t-pause');
 const timerReset = document.querySelector('#t-reset');
+const timerMute = document.querySelector('#t-mute');
 const timerProgressSegments = document.querySelector('#t-progress-segments');
 const timerProgressOverlay = document.querySelector('#t-progress-overlay');
 const timerProgress = document.querySelector('#t-progress-time');
@@ -35,7 +36,8 @@ const timer = {
   extBreak: true,
   extBreakLength: 30,
   extBreakAfter: 3,
-  timeElapsedOnPause: 0
+  timeElapsedOnPause: 0,
+  muted: false
 };
 
 // create objects nested in an array to store times for each round
@@ -309,6 +311,21 @@ function resetTimer() {
   changeColor('blue');
 };
 
+function toggleMute () {
+  if (timer.muted) {
+    timer.muted = false;
+    shortBeep.muted = false;
+    longBeep.muted = false;
+    timerMute.classList.remove('button-disabled');
+  }
+  else {
+    timer.muted = true;
+    shortBeep.muted = true;
+    longBeep.muted = true;
+    timerMute.classList.add('button-disabled');
+  }
+}
+
 // if checkbox is changed, disable related inputs
 function disableExtBreak() {
   if (extBreakCheckbox.checked) {
@@ -379,6 +396,7 @@ resetTimer();
 timerStart.addEventListener('click', startTimer);
 timerPause.addEventListener('click', pauseTimer);
 timerReset.addEventListener('click', resetTimer);
+timerMute.addEventListener('click', toggleMute);
 extBreakCheckbox.addEventListener('change', disableExtBreak);
 countdownCheckbox.addEventListener('change', disableCountdown);
 cancelModalButton.addEventListener('click', cancelModal);
