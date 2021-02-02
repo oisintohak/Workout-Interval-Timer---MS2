@@ -56,3 +56,7 @@ This is the second Milestone Project for the Code Institute course.
 
   #### - Audio
     - The beep sounds used in the timer were taken from [https://mixkit.co/free-sound-effects/beep/](https://mixkit.co/free-sound-effects/beep/)
+
+  #### - Icons
+    -  Favicon taken from [Flaticon.com](https://www.flaticon.com/)
+    -  Other icons taken from [Fontawesome](https://fontawesome.com/)

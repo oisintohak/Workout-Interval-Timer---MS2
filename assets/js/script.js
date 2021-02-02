@@ -12,8 +12,7 @@ const modalForm = document.querySelector('#modal-form');
 // TIMER ELEMENTS
 const timerDisplay = document.querySelector('#t-display');
 const timerMessage = document.querySelector('#t-message');
-const timerStart = document.querySelector('#t-start');
-const timerPause = document.querySelector('#t-pause');
+const timerPlayPause = document.querySelector('#t-play-pause');
 const timerReset = document.querySelector('#t-reset');
 const timerMute = document.querySelector('#t-mute');
 const timerProgressSegments = document.querySelector('#t-progress-segments');
@@ -25,6 +24,7 @@ const longBeep = new Audio('../audio/long.mp3');
 
 // object to store default settings and values
 const timer = {
+  state: 'paused',
   running: false,
   hasStarted: false,
   workTime: 30,
@@ -96,16 +96,41 @@ function createSegments() {
   }
 }
 
+function playPauseTimer () {
+  if (timer.state == 'paused') {
+    timer.state = 'playing';
+    togglePlayPause();
+    startTimer();
+  }
+  else {
+    timer.state = 'paused';
+    togglePlayPause();
+    pauseTimer();
+  }
+};
+
+function togglePlayPause() {
+  if (timer.state == 'playing') {
+    let play = `<i class="fas fa-pause-circle"></i>`;
+    timerPlayPause.innerHTML = '';
+    timerPlayPause.insertAdjacentHTML('afterbegin', play);
+  }
+  else {
+    let pause = `<i class="fas fa-play-circle"></i>`;
+    timerPlayPause.innerHTML = '';
+    timerPlayPause.insertAdjacentHTML('afterbegin', pause);
+  }
+};
+
 // run the timer when start button is pressed
 function startTimer () {
   if (timer.running) {
     return;
   }
-  toggleStartButton('disable');
-  togglePauseButton('enable');
   if (timer.countdown && !timer.countdownComplete) {
     timer.countdownStartTime = new Date().getTime();
     displayMessage('Get Ready...');
+    changeColor('blue');
     timer.countdownID = setInterval(countdown, 100);
     return;
   }
@@ -124,18 +149,6 @@ function startTimer () {
   changeColor();
   if ((timer.countdown && timer.countdownComplete) || !timer.countdown)
   timer.intervalID = setInterval(runTimer, 100);
-};
-
-// enable/disable start button
-function toggleStartButton (state) {
-  if (state === 'enable') {
-    timerStart.disabled = false;
-    timerStart.classList.remove('button-disabled');
-  }
-  else {
-    timerStart.disabled = true;
-    timerStart.classList.add('button-disabled');
-  }
 };
 
 // run the countdown for the specified time
@@ -162,6 +175,7 @@ function runTimer() {
   checkRound();
 };
 
+// play audio for last 4 seconds of each round/countdown
 function beep (current, next) {
   if (current <= 4 && next < current) {
     if (current == 1) {
@@ -261,10 +275,10 @@ function changeColor(color) {
 // cease the recurring function and record the time elapsed
 // change the message and color to reflect the timer state
 function pauseTimer() {
-  togglePauseButton('disable');
-  toggleStartButton('enable');
   if (timer.countdown && !timer.countdownComplete) {
     clearInterval(timer.countdownID);
+    displayMessage('Paused');
+    changeColor('orange');
   }
   if (timer.running) {
     clearInterval(timer.intervalID);
@@ -275,18 +289,6 @@ function pauseTimer() {
     changeColor('orange');
   }
 };
-
-// enable/disable pause button
-function togglePauseButton (state) {
-  if (state === 'enable') {
-    timerPause.disabled = false;
-    timerPause.classList.remove('button-disabled');
-  }
-  else {
-    timerPause.disable = true;
-    timerPause.classList.add('button-disabled');
-  }
-}
 
 // clear any recorded elapsed time and clear the display and progress
 function resetTimer() {
@@ -312,17 +314,21 @@ function resetTimer() {
 };
 
 function toggleMute () {
+  let unmute = `<i class="fas fa-volume-up"></i>`;
+  let mute = `<i class="fas fa-volume-mute"></i>`;
   if (timer.muted) {
     timer.muted = false;
     shortBeep.muted = false;
     longBeep.muted = false;
-    timerMute.classList.remove('button-disabled');
+    timerMute.innerHTML = '';
+    timerMute.insertAdjacentHTML('afterbegin', unmute);
   }
   else {
     timer.muted = true;
     shortBeep.muted = true;
     longBeep.muted = true;
-    timerMute.classList.add('button-disabled');
+    timerMute.innerHTML = '';
+    timerMute.insertAdjacentHTML('afterbegin', mute);
   }
 }
 
@@ -393,8 +399,7 @@ function cancelModal() {
 resetTimer();
 
 // EVENT LISTENERS:
-timerStart.addEventListener('click', startTimer);
-timerPause.addEventListener('click', pauseTimer);
+timerPlayPause.addEventListener('click', playPauseTimer);
 timerReset.addEventListener('click', resetTimer);
 timerMute.addEventListener('click', toggleMute);
 extBreakCheckbox.addEventListener('change', disableExtBreak);

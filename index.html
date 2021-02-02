@@ -4,57 +4,52 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Workout Timer</title>
+  <script src="https://kit.fontawesome.com/8bdadb5ed1.js" crossorigin="anonymous"></script>
   <link rel="stylesheet" href="assets/css/bootstrap.min.css">
   <link rel="stylesheet" href="assets/css/style.css">
+  <link rel="icon" href="assets/images/stopwatch.png" type="image/x-icon">
 </head>
 <body>
   <main id="main-wrapper" class="container d-flex flex-column justify-content-center">
-    <div class="col-auto">
-      <div class="row">
-          <!-- Button trigger modal -->
-        <button id="settings-button" type="button" class="btn btn-primary mx-auto" data-bs-toggle="modal" data-bs-target="#settingsModal">Timer Settings</button>
-      
-        <!-- MODAL FOR SETTINGS -->
-        <div class="modal fade" id="settingsModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-          <div class="modal-dialog">
-            <div class="modal-content">
-              <div class="modal-header">
-                <h5 class="modal-title" id="staticBackdropLabel">Timer Settings</h5>
-                <!-- <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button> -->
-              </div>
-              <div class="modal-body">
-                <form id="modal-form" action="">
-                  <fieldset class="mb-3">
-                    <label for="work-time">Work Time:</label>
-                    <input type="number" id="work-time" class="number-input" name="work-time" value="30" step="1" min="1" required>
-                    <label for="work-time">seconds</label> <br>
-                    <label for="rest-time">Rest Time:</label>
-                    <input type="number" id="rest-time" class="number-input" name="rest-time" value="10" step="1" min="1" required>
-                    <label for="rest-time">seconds</label> <br>
-                    <label for="rounds">Number of rounds:</label>
-                    <input type="number" id="rounds" class="number-input" name="rounds" value="9" step="1" min="1" max="50" required> <br>
-                  </fieldset>
-                  <fieldset class="mb-3">
-                    <input type="checkbox" id="ext-break-checkbox" checked>
-                    <label for="ext-break-checkbox">Extended break after every:</label>
-                    <input type="number" id="ext-break-rounds" class="number-input" name="ext-break" value="3" step="1" min="1" required>
-                    <label for="ext-break-rounds">rounds</label>
-                    <label for="ext-break-time">for</label>
-                    <input type="number" id="ext-break-time" class="number-input" value="30" step="1" min="1" required>
-                    <label for="ext-break-time">seconds</label> <br>
-                  </fieldset>
-                  <fieldset class="mb-3">
-                    <input type="checkbox" id="countdown-checkbox" checked>
-                    <label for="countdown-checkbox">Add countdown of</label>
-                    <input type="number" id="countdown-time" class="number-input" value="5" min="1" step="1" required><label for="countdown-time">seconds before starting the timer</label>
-                  </fieldset>
-                  <button id="update-timer-button" type="submit" class="btn btn-primary">Update Timer</button>
-                  <button id="cancel-button" type="button" class="btn btn-secondary">Cancel</button>
-                </form>
-              </div>
-              <div class="modal-footer">                
-              </div>
-            </div>
+    <!-- MODAL FOR SETTINGS -->
+    <div class="modal fade" id="settingsModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="staticBackdropLabel">Timer Settings</h5>
+            <!-- <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button> -->
+          </div>
+          <div class="modal-body">
+            <form id="modal-form" action="">
+              <fieldset class="mb-3">
+                <label for="work-time">Work Time:</label>
+                <input type="number" id="work-time" class="number-input" name="work-time" value="30" step="1" min="1" required>
+                <label for="work-time">seconds</label> <br>
+                <label for="rest-time">Rest Time:</label>
+                <input type="number" id="rest-time" class="number-input" name="rest-time" value="10" step="1" min="1" required>
+                <label for="rest-time">seconds</label> <br>
+                <label for="rounds">Number of rounds:</label>
+                <input type="number" id="rounds" class="number-input" name="rounds" value="9" step="1" min="1" max="50" required> <br>
+              </fieldset>
+              <fieldset class="mb-3">
+                <input type="checkbox" id="ext-break-checkbox" checked>
+                <label for="ext-break-checkbox">Extended break after every:</label>
+                <input type="number" id="ext-break-rounds" class="number-input" name="ext-break" value="3" step="1" min="1" required>
+                <label for="ext-break-rounds">rounds</label>
+                <label for="ext-break-time">for</label>
+                <input type="number" id="ext-break-time" class="number-input" value="30" step="1" min="1" required>
+                <label for="ext-break-time">seconds</label> <br>
+              </fieldset>
+              <fieldset class="mb-3">
+                <input type="checkbox" id="countdown-checkbox" checked>
+                <label for="countdown-checkbox">Add countdown of</label>
+                <input type="number" id="countdown-time" class="number-input" value="5" min="1" step="1" required><label for="countdown-time">seconds before starting the timer</label>
+              </fieldset>
+              <button id="update-timer-button" type="submit" class="btn btn-primary">Update Timer</button>
+              <button id="cancel-button" type="button" class="btn btn-secondary">Cancel</button>
+            </form>
+          </div>
+          <div class="modal-footer">                
           </div>
         </div>
       </div>
@@ -72,12 +67,12 @@
         </div>
         <!-- TIMER BUTTONS -->
         <div class="text-center my-3">
-          <button type="button" id="t-start" class="btn btn-primary">START</button>
-          <button type="button" id="t-pause" class="btn btn-primary button-disabled" disabled>PAUSE</button>
-          <button type="button" id="t-reset" class="btn btn-primary">RESET</button>
+          <button type="button" id="t-play-pause" class="black-button"><i class="fas fa-play-circle"></i></button>
         </div>
         <div class="text-center my-3">
-          <button id="t-mute" type="button">MUTE</button>
+          <button type="button" id="t-reset" class="black-button"><i class="fas fa-redo"></i></button>
+          <button id="settings-button" type="button" class="black-button" data-bs-toggle="modal" data-bs-target="#settingsModal"><i class="fas fa-cog"></i></button>
+          <button id="t-mute" class="black-button" type="button"><i class="fas fa-volume-up"></i></button>
         </div>
         <div id="progress" class="text-center">
           <!-- PROGRESS SEGMENTS -->
