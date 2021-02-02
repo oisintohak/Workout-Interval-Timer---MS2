@@ -19,8 +19,8 @@ const timerProgressSegments = document.querySelector('#t-progress-segments');
 const timerProgressOverlay = document.querySelector('#t-progress-overlay');
 const timerProgress = document.querySelector('#t-progress-time');
 // AUDIO
-const shortBeep = new Audio('../audio/short.mp3');
-const longBeep = new Audio('../audio/long.mp3');
+const shortBeep = new Audio('/../audio/short.mp3');
+const longBeep = new Audio('/../audio/long.mp3');
 
 // object to store default settings and values
 const timer = {
