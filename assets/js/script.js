@@ -25,7 +25,6 @@ const longBeep = new Audio('https://raw.githubusercontent.com/oisintohak/Milesto
 // object to store default settings and values
 const timer = {
   state: 'paused',
-  running: false,
   hasStarted: false,
   workTime: 30,
   restTime: 10,
@@ -82,16 +81,13 @@ function createSegments() {
     // calculate percentage of total runtime(p):
     if (i % 2 !== 0) {
       p = `${((timer.workTime / timer.runtime) * 100).toFixed(2)}%`;
-      span.textContent = 'W';
       span.style.backgroundColor = '#59dd5e';
     } 
     else {
       p = `${((timer.rounds[i].rest / timer.runtime) * 100).toFixed(2)}%`;
-      span.textContent = 'R';
       span.style.backgroundColor = '#ff6347';
     }
     span.style.width = p;
-
     timerProgressSegments.appendChild(span);
   }
 }
@@ -111,22 +107,19 @@ function playPauseTimer () {
 
 function togglePlayPause() {
   if (timer.state == 'playing') {
-    let play = `<i class="fas fa-pause-circle"></i>`;
-    timerPlayPause.innerHTML = '';
-    timerPlayPause.insertAdjacentHTML('afterbegin', play);
-  }
-  else {
-    let pause = `<i class="fas fa-play-circle"></i>`;
+    let pause = `<i class="fas fa-pause-circle"></i>`;
     timerPlayPause.innerHTML = '';
     timerPlayPause.insertAdjacentHTML('afterbegin', pause);
+  }
+  else {
+    let play = `<i class="fas fa-play-circle"></i>`;
+    timerPlayPause.innerHTML = '';
+    timerPlayPause.insertAdjacentHTML('afterbegin', play);
   }
 };
 
 // run the timer when start button is pressed
 function startTimer () {
-  if (timer.running) {
-    return;
-  }
   if (timer.countdown && !timer.countdownComplete) {
     timer.countdownStartTime = new Date().getTime();
     displayMessage('Get Ready...');
@@ -144,7 +137,6 @@ function startTimer () {
     timer.timeElapsed = 0;
   }
   timer.startTime = new Date().getTime();
-  timer.running = true;
   displayMessage('GO!');
   changeColor();
   if ((timer.countdown && timer.countdownComplete) || !timer.countdown)
@@ -247,10 +239,10 @@ function displayMessage(message) {
 };
 
 // change the background color to reflect the current timer state
-function changeColor(color) {
+function changeColor(color = 'none') {
   let body = document.querySelector('body');
   // if function was called without argument, check current round:
-  if (!color) {
+  if (color == 'none') {
     if (timer.currentRound % 2 === 0) {
       changeColor('red');
     }
@@ -280,9 +272,8 @@ function pauseTimer() {
     displayMessage('Paused');
     changeColor('orange');
   }
-  if (timer.running) {
+  else {
     clearInterval(timer.intervalID);
-    timer.running = false;
     timer.timeElapsedOnPause = timer.timeElapsed;
     timer.countdownComplete = false;
     displayMessage('Paused');
@@ -292,7 +283,9 @@ function pauseTimer() {
 
 // clear any recorded elapsed time and clear the display and progress
 function resetTimer() {
-  pauseTimer();
+  if (timer.state == 'playing') {
+    playPauseTimer();
+  }
   timer.currentRound = 1;
   timer.hasStarted = false;
   timer.roundType = 'work';
@@ -356,8 +349,9 @@ function disableCountdown() {
 
 // update timer settings with values from user input
 function updateTimer(event) {
-  pauseTimer();
-  timer.running = false;
+  if (timer.state == 'playing') {
+    playPauseTimer();
+  }
   timer.hasStarted = false;
   timer.workTime = parseFloat(workTimeInput.value);
   timer.restTime = parseFloat(restTimeInput.value);
