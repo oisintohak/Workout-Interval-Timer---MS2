@@ -92,6 +92,7 @@ function createSegments() {
   }
 }
 
+// toggle state and start timer when button is pressed
 function playPauseTimer () {
   if (timer.state == 'paused') {
     timer.state = 'playing';
@@ -105,6 +106,7 @@ function playPauseTimer () {
   }
 };
 
+// toggle wether play/pause button is displayed
 function togglePlayPause() {
   if (timer.state == 'playing') {
     let pause = `<i class="fas fa-pause-circle"></i>`;
@@ -306,6 +308,7 @@ function resetTimer() {
   changeColor('blue');
 };
 
+// toggle the mute button and mute the audio
 function toggleMute () {
   let unmute = `<i class="fas fa-volume-up"></i>`;
   let mute = `<i class="fas fa-volume-mute"></i>`;

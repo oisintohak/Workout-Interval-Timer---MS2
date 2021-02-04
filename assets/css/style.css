@@ -1,4 +1,7 @@
+@import url('https://fonts.googleapis.com/css2?family=Teko&display=swap');
+
 body {
+  font-family: 'Teko', sans-serif;
   transition: all .4s;
 }
 
@@ -6,10 +9,7 @@ body {
   min-height: 100vh;
 }
 
-#settings-button {
-  width: auto;
-}
-
+/* SETTINGS MODAL */
 #modal-form .number-input {
   width: 4em;
 }
@@ -23,6 +23,7 @@ body {
   background: #000;
 }
 
+/* TIMER */
 #t-display {
   font-size: 8rem;
   line-height: 1;
@@ -65,10 +66,6 @@ body {
   border-radius: 8px;
   overflow: hidden;
 }
-#t-progress-segments span {
-  padding-top: 1.4em;
-  font-size: x-small;
-}
 
 #t-progress-overlay {
   height: 3em;
@@ -82,9 +79,19 @@ body {
 }
 
 #t-progress-time {
-  margin-top: -2em;
+  margin-top: -1em;
 }
 
-#t-message {
-  margin-top: 1em;
+#t-progress-time, #t-message {
+  font-size: 2em;
+}
+
+#t-settings {
+  padding: 0 2.5rem;
+}
+
+#reset-label {
+  line-height: 0;
+  font-size: .5em;
+  -webkit-text-stroke: black;
 }
