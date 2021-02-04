@@ -1,9 +1,9 @@
 # Workout Interval Timer
-This is the second Milestone Project for the Code Institute course.
+This is a single page website for an Interval Workout timer. It is designed to be simple and intuitive to use.
+The user can instantly change the work/rest period length to suit their needs and the UI features large buttons, allowing the user to easily start and stop the timer as they need. The primary goal of this website is to provide a responsive, accesible and easy-to-use, browser-based timer for interval training
 
 ---
-
-## UX
+![Multi Device Website Mockup](wireframes/mockup.jpg)
 
 ### - Strategy: What are we aiming to achieve and for whom?
 - We want to make a timer that keeps time accurately.
@@ -63,6 +63,31 @@ This is the second Milestone Project for the Code Institute course.
  - JavaScript
  - [Bootstrap 5](https://getbootstrap.com/docs/5.0/getting-started/introduction/) Bootstrap was used mainly for the modal, layout and spacing.
  - [Google Fonts](https://fonts.google.com/specimen/Teko?preview.text=35%20Paused&preview.text_type=custom&sidebar.open=true&selection.family=Teko) Teko font was used for this project.
+
+### - Testing
+- [W3C HTML Validation Service](https://validator.w3.org/) was used to validate the HTML.
+- [W3C CSS Validation Service](https://jigsaw.w3.org/css-validator/) was used to validate the CSS.
+- [JShint for VSCode](https://marketplace.visualstudio.com/items?itemName=dbaeumer.jshint) was used to check JavaScript for errors.
+ - This project was tested with the following browsers on Windows 10:
+    - Google Chrome
+    - Mozilla Firefox
+    - Opera
+    - Microsoft Edge
+  - The following mobile devices and browsers were used for testing:
+    - Xiaomi Redmi Note 7 Google Chrome, Firefox
+    - Lenovo Tab 4 10 Google Chrome
+  With each device and browser the following steps were taken:
+  - (On desktop) Resize the window to ensure the layout and spacing remains consistent from 320 pixel width and above
+  - Test the play/pause button to ensure the timer starts and can be paused
+  - Allow the countdown to finish and ensure it runs every time the timer is started/resumed
+  - Ensure the timer runs through to the end and the appropriate messages and colors are displayed throughout and when the timer is finished
+  - Ensure that the reset button has the correct effect if the timer is running or not.
+  - Ensure the settings button triggers the modal
+  - Ensure the cancel button will close the modal and restore the current settings to the inputs
+  - Ensure the settings can be updated and the extended break and countdown can be disabled
+  - Ensure that the update button only works if all inputs are valid
+  - Ensure that the mute button functions as expected and test it when there is audio currently playing
+  - 
 
 ### - Deployment
 This project was deployed to GitHub pages using the following steps:

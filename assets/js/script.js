@@ -1,3 +1,4 @@
+/*jshint esversion: 6 */ 
 // SETTINGS ELEMENTS
 const workTimeInput = document.querySelector('#work-time');
 const restTimeInput = document.querySelector('#rest-time');
@@ -65,12 +66,12 @@ function createRounds() {
       timer.rounds[i].roundRuntime += timer.rounds[i-1].roundRuntime;
     }
   }
-};
+}
 
 // calculate total runtime
 function calcRuntime () {
   timer.runtime = timer.rounds[timer.numRounds * 2].roundRuntime;
-};
+}
 
 // create segments for work/rest periods in progress bar
 function createSegments() {
@@ -104,7 +105,7 @@ function playPauseTimer () {
     togglePlayPause();
     pauseTimer();
   }
-};
+}
 
 // toggle wether play/pause button is displayed
 function togglePlayPause() {
@@ -118,9 +119,11 @@ function togglePlayPause() {
     timerPlayPause.innerHTML = '';
     timerPlayPause.insertAdjacentHTML('afterbegin', play);
   }
-};
+}
 
 // run the timer when start button is pressed
+// idea to keep accurate track of time by comparing Date objects
+// taken from https://olinations.medium.com/an-accurate-vanilla-js-stopwatch-script-56ceb5c6f45b
 function startTimer () {
   if (timer.countdown && !timer.countdownComplete) {
     timer.countdownStartTime = new Date().getTime();
@@ -143,7 +146,7 @@ function startTimer () {
   changeColor();
   if ((timer.countdown && timer.countdownComplete) || !timer.countdown)
   timer.intervalID = setInterval(runTimer, 100);
-};
+}
 
 // run the countdown for the specified time
 function countdown () {
@@ -157,7 +160,7 @@ function countdown () {
     clearInterval(timer.countdownID);
     startTimer();
   }
-};
+}
 
 // compare the current time to the start time and calulate remaining time
 function runTimer() {
@@ -167,7 +170,7 @@ function runTimer() {
   displayTime();
   displayProgress();
   checkRound();
-};
+}
 
 // play audio for last 4 seconds of each round/countdown
 function beep (current, next) {
@@ -209,16 +212,16 @@ function checkRound() {
     // manual completion of progress bar in case of negative value:
     timerProgressOverlay.style.width = '0%';
   }
-};
+}
 
 // calculate the remaining time in the current round and display it
 function displayTime() {
   let time = timer.rounds[timer.currentRound].roundRuntime - Math.floor(timer.timeElapsed);
   beep(timerDisplay.textContent, time);
   // prevent display from briefly flashing to 0 between rounds:
-  time == 0 ? timerDisplay.textContent = 1 : timerDisplay.textContent = time;
+  timerDisplay.textContent = (time == 0 ) ? 1 : time;
   timerProgress.textContent = `${secondsToFullTime(Math.floor(timer.timeElapsed))}/${secondsToFullTime(timer.runtime)}`;
-};
+}
 
 // convert milliseconds to time in '00:00' format
 function secondsToFullTime(seconds) {
@@ -228,17 +231,17 @@ function secondsToFullTime(seconds) {
     sec = `0${sec}`;
   }
   return `${min}:${sec}`;
-};
+}
 
 // calculate the percentage of runtime completed and update progress bar
 function displayProgress() {
   timerProgressOverlay.style.width = `${100 - ((timer.timeElapsed / timer.runtime) * 100)}%`;
-};
+}
 
 // display the appropriate message according to the round and the state of the timer
 function displayMessage(message) {
   timerMessage.textContent = message;
-};
+}
 
 // change the background color to reflect the current timer state
 function changeColor(color = 'none') {
@@ -281,7 +284,7 @@ function pauseTimer() {
     displayMessage('Paused');
     changeColor('orange');
   }
-};
+}
 
 // clear any recorded elapsed time and clear the display and progress
 function resetTimer() {
@@ -306,7 +309,7 @@ function resetTimer() {
   createSegments();
   displayMessage('Press Start');
   changeColor('blue');
-};
+}
 
 // toggle the mute button and mute the audio
 function toggleMute () {
@@ -338,7 +341,7 @@ function disableExtBreak() {
     extBreakTime.disabled = true;
     extBreakRounds.disabled = true;
   }
-};
+}
 
 // if checkbox is changed, disable related inputs
 function disableCountdown() {
@@ -348,7 +351,7 @@ function disableCountdown() {
   else {
     countdownTime.disabled = true;
   }
-};
+}
 
 // update timer settings with values from user input
 function updateTimer(event) {
@@ -359,34 +362,34 @@ function updateTimer(event) {
   timer.workTime = parseFloat(workTimeInput.value);
   timer.restTime = parseFloat(restTimeInput.value);
   timer.numRounds = parseFloat(roundsInput.value);
-  extBreakCheckbox.checked === true ? timer.extBreak = true : timer.extBreak = false;
+  timer.extBreak = (extBreakCheckbox.checked) ? true : false;
   timer.extBreakLength = parseFloat(extBreakTime.value);
   timer.extBreakAfter = parseFloat(extBreakRounds.value);
   timer.timeElapsedOnPause = 0;
-  countdownCheckbox.checked === true ? timer.countdown = true : timer.countdown = false;
+  timer.countdown = (countdownCheckbox.checked) ? true : false;
   timer.countdownTime = parseFloat(countdownTime.value);
   resetTimer();
   event.preventDefault();
   closeModal();
-};
+}
 
 // target and close the settings modal
 function closeModal() {
-  let modalElement = document.querySelector('#settingsModal');
+  let modalElement = document.querySelector('#settings-modal');
   let modal = bootstrap.Modal.getInstance(modalElement);
   modal.hide();
-};
+}
 
 // close modal and reset inputs to current value
 function cancelModal() {
   workTimeInput.value = timer.workTime;
   restTimeInput.value = timer.restTime;
   roundsInput.value = timer.numRounds;
-  timer.extBreak ? extBreakCheckbox.checked = true : extBreakCheckbox.checked = false;
+  extBreakCheckbox.checked = (timer.extBreak) ? true : false;
   disableExtBreak();
   extBreakTime.value = timer.extBreakLength;
   extBreakRounds.value = timer.extBreakAfter;
-  timer.countdown ? countdownCheckbox.checked = true : countdownCheckbox.checked = false;
+  countdownCheckbox.checked = (timer.countdown) ? true : false;
   disableCountdown();
   countdownTime.value = timer.countdownTime;
   closeModal();
