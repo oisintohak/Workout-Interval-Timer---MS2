@@ -5,8 +5,7 @@ This is the second Milestone Project for the Code Institute course.
 
 ## UX
 
-### - Strategy - What are we aiming to achieve and for whom?
-#### For the user: 
+### - Strategy: What are we aiming to achieve and for whom?
 - We want to make a timer that keeps time accurately.
 - We want to make a timer that can be used for interval workouts.
 - We want a timer that can take user input to change the work/rest times.
@@ -16,9 +15,8 @@ This is the second Milestone Project for the Code Institute course.
 - We want an audio cue to signal the end of a work/rest period.
 - We want to create a website that is easy and intuitive to use.
 - We want to create a site that is easy to view on all screen sizes.
-- 
 
-### - Scope - What features (based on information from the Strategy) do you want to include in your design? What's on the table and what's not(at least for now)?
+### - Scope: What features (based on information from the Strategy) do you want to include in your design? What's on the table and what's not(at least for now)?
 - Intuitive user interface.
 - Customizable work and rest times.
 - Option for an extended break after a set number of rounds.
@@ -26,29 +24,70 @@ This is the second Milestone Project for the Code Institute course.
 - Progress bar showing current position in workout.
 - Options should be collapsable, to leave a minimal interface when timer is running.
 
-### - Structure (How is the information structured and how is it logically grouped?)
+### - Structure: How is the information structured and how is it logically grouped?
 - Single page layout.
-- Simple logo at the top of the page.
-- Options should expand below the logo and be collapsable.
+- Simple, minimal UI for ease of use.
+- Play/Pause button and time display should be the largest elements on the page.
+- Settings should be hidden when not in use.
 
-### - Skeleton (How will our information be represented, and how will the user navigate to the information and the features?)
+### - Skeleton: How will our information be represented, and how will the user navigate to the information and the features?
 ###### Wireframes:
 - [Desktop](wireframes/desktop.png)
 - [Mobile](wireframes/mobile.png)
 
-### - Surface (What will the finished product look like? - What colors, typography, and design elements will we use?)
+### - Surface: What will the finished product look like? - What colors, typography, and design elements will we use?
 - Minimal interface.
 - Contrasting accents for work/rest times to act as instant visual signal to users.
 
+### - Existing Features
+ - Simple design and layout.
+ - Large time display and play/pause button.
+ - Reset button to stop timer and clear progress.
+ - Progress bar with segments for each work/rest period.
+ - Progress time display showing total time elapsed and total runtime of timer.
+ - Message display showing a different message depending on the current state of the timer.
+ - Audio alert at the end of each countdown and round.
+ - Mute button for audio alert.
+ - Settings modal with inputs to customize the length of work/rest periods, extended breaks and the countdown.
+ - Settings only accept valid inputs and will notify the user if the input is invalid.
 
-### - Planning
- - Timer function needss to differentiate between work & rest times.
- - When paused, current round number needs to be saved
- - Add all round times to get total runtime, keep track of elapsed time and compare to length of rounds to calculate current round.
+### - Potential features to be implemented
+  - Information button to reveal info about Interval training and the purpose of the timer.
+  - Option for user to add their own alert sound.
+  - Option for user to customize the timer colors.
+  - Change progress bar to stopwatch with hand to indicate current position.
+
+### - Technologies Used
+ - HTML
+ - CSS
+ - JavaScript
+ - [Bootstrap 5](https://getbootstrap.com/docs/5.0/getting-started/introduction/) Bootstrap was used mainly for the modal, layout and spacing.
+ - [Google Fonts](https://fonts.google.com/specimen/Teko?preview.text=35%20Paused&preview.text_type=custom&sidebar.open=true&selection.family=Teko) Teko font was used for this project.
+
+### - Deployment
+This project was deployed to GitHub pages using the following steps:
+
+ - Navigate to the [GitHub Repository Page](https://github.com/oisintohak/Milestone-Project-2)
+ - Go to the [Settings](https://github.com/oisintohak/Milestone-Project-2/settings) page and scroll down to the GitHub Pages section
+ - Select the main branch and save
+ - After the page refreshes, the link to the live page will be in the GitHub Pages section
+
+To run this project locally:
+ - Navigate to the [GitHub Repository Page](https://github.com/oisintohak/Milestone-Project-2)
+ - Click code and copy the URL to clone with HTTPS
+ - In a terminal with git installed navigate to the directory where you want the repository to be cloned
+ - Run 'git clone' followed by the URL you copied:
+ - ```git clone https://github.com/oisintohak/Milestone-Project-2.git```
 
 ### - Issues
- - When start button is pressed during countdown the timer becomes unresponsive until page is refreshed.
-   - Fixed by disabling start and pause buttons when they are pressed.
+ - When the start button is pressed during countdown the timer malfunctions and becomes unresponsive until page is refreshed.
+   - Fixed by combining start & pause buttons into a single play/pause button.
+ - If timer is updated when it is running, the button does not change to 'play'.
+   - Fixed by calling the playPauseTimer function when timer is updated while it is running.
+ - If user inputs values into the settings and doesn't update the timer, the values will not change back to the current timer settings.
+    - When the 'cancel' button is pressed, restore the input values to the current timer settings.
+
+
 
 ### - Credits
   #### - Code
@@ -60,3 +99,6 @@ This is the second Milestone Project for the Code Institute course.
   #### - Icons
     -  Favicon taken from [Flaticon.com](https://www.flaticon.com/)
     -  Other icons taken from [Fontawesome](https://fontawesome.com/)
+
+  #### Acknowledgements
+   - I received great advice and feedback from my mentor Ignatius Ukwuoma.
