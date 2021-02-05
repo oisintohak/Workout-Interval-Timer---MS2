@@ -3,6 +3,7 @@
 body {
   font-family: 'Teko', sans-serif;
   transition: all .4s;
+  max-height: 100vh;
 }
 
 #main-wrapper {
@@ -53,7 +54,7 @@ body {
 
 /* TIMER */
 #t-display {
-  font-size: 8rem;
+  font-size: 8em;
   line-height: 1;
 }
 
@@ -96,6 +97,10 @@ body {
   color: #ddd; 
 }
 
+#t-progress {
+  margin-top: 1em;
+}
+
 #t-progress-segments {
   height: 3em;
   display: flex;
@@ -135,4 +140,31 @@ body {
   position: relative;
   top: -1.5em;
   text-shadow: none;
+}
+
+@media only screen and (max-height: 630px) {
+  .black-button {
+    font-size: 2em;
+  }
+  #t-play-pause {
+    font-size: 4rem;
+  }
+  #t-message, #t-progress-time {
+    font-size: 1.5em;
+  }
+}
+
+@media only screen and (max-height: 550px) {
+  #t-display {
+    font-size: 6em;
+  }
+  #t-progress {
+    margin-top: 0;
+  }
+  #t-progress-segments, #t-progress-overlay {
+    height: 1.5em;
+  }
+  #t-progress-overlay {
+    top: -1.5em;
+  }
 }
