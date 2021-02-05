@@ -1,6 +1,6 @@
 # Workout Interval Timer
 This is a single page website for an Interval Workout timer. It is designed to be simple and intuitive to use.
-The user can instantly change the work/rest period length to suit their needs and the UI features large buttons, allowing the user to easily start and stop the timer as they need. The primary goal of this website is to provide a responsive, accesible and easy-to-use, browser-based timer for interval training
+The user can instantly change the work/rest period length to suit their needs and the UI features large buttons, allowing the user to easily start and stop the timer as they need. The primary goal of this website is to provide a responsive, accessible and easy-to-use, browser-based timer for interval training
 
 ---
 ![Multi Device Website Mockup](wireframes/mockup.jpg)
@@ -22,9 +22,9 @@ The user can instantly change the work/rest period length to suit their needs an
 - Option for an extended break after a set number of rounds.
 - Alarm or bell sound after rounds/breaks.
 - Progress bar showing current position in workout.
-- Options should be collapsable, to leave a minimal interface when timer is running.
+- Options should be collapsible, to leave a minimal interface when timer is running.
 
-### - Structure: How is the information structured and how is it logically grouped?
+### - Structure: How is the information structured, and how is it logically grouped?
 - Single page layout.
 - Simple, minimal UI for ease of use.
 - Play/Pause button and time display should be the largest elements on the page.
