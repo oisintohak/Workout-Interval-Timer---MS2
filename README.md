@@ -94,8 +94,9 @@ The user can instantly change the work/rest period length to suit their needs an
     - Microsoft Edge
   - The following mobile devices and browsers were used for testing:
     - Xiaomi Redmi Note 7 Google Chrome, Firefox
-    - Lenovo Tab 4 10 Google Chrome
-  With each device and browser the following steps were taken:
+    - Lenovo Tab 4 10 Google Chrome  
+  
+  #### With each device and browser the following steps were taken:
   - (On desktop) Resize the window to ensure the layout and spacing remains consistent from 320 pixel width and above
   - Test the play/pause button to ensure the timer starts and can be paused
   - Allow the countdown to finish and ensure it runs every time the timer is started/resumed
